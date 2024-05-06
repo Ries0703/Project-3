@@ -65,7 +65,7 @@ public class BuildingEntity extends BaseEntity {
     private String carFee;
 
     @Column(name = "motofee")
-    private String motorbikeFee;
+    private String motoFee;
 
     @Column(name = "overtimefee")
     private String overtimeFee;
@@ -107,7 +107,7 @@ public class BuildingEntity extends BaseEntity {
     private String managerName;
 
     @Column(name = "managerphone")
-    private String managerPhoneNumber;
+    private String managerPhone;
 
     @OneToMany(mappedBy = "buildingEntity")
     private List<RentAreaEntity> rentAreaEntities;

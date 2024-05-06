@@ -63,7 +63,7 @@ public class BuildingController {
         dto.setFloorArea(123L);
         dto.setDirection("south");
         dto.setLevel(123L);
-        dto.setRentArea(123123L);
+        dto.setRentArea("1,2,3,4");
         dto.setRentPrice(123123L);
         dto.setRentPriceDescription("a lot");
         dto.setServiceFee(123123L);

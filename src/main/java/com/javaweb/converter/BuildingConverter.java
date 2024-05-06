@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Component
@@ -16,6 +17,8 @@ public class BuildingConverter {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private RentAreaConverter rentAreaConverter;
 	public BuildingSearchResponse entityToResponse(BuildingEntity building) {
 		String address = String.join(", ",
 				building.getStreet(),
@@ -33,8 +36,17 @@ public class BuildingConverter {
 
 	public BuildingEntity dtoToEntity(BuildingDTO buildingDTO) {
 		BuildingEntity buildingEntity = modelMapper.map(buildingDTO, BuildingEntity.class);
-		
-
+		buildingEntity.setDistrictCode(buildingDTO.getDistrict().toString());
+		StringBuilder type = new StringBuilder(buildingEntity.getType())
+									.deleteCharAt(buildingEntity.getType().length() - 1)
+									.deleteCharAt(0);
+		buildingEntity.setType(type.toString());
+		String[] rentAreas = buildingDTO.getRentArea().trim().split("[ ,]+");
+		buildingEntity.setRentAreaEntities(
+				Arrays.stream(rentAreas)
+				.map(area -> rentAreaConverter.stringToRentArea(area, buildingEntity))
+				.collect(Collectors.toList())
+		);
 		return buildingEntity;
 	}
 }

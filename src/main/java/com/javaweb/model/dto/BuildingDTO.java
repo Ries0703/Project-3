@@ -32,7 +32,7 @@ public class BuildingDTO extends AbstractDTO<BuildingDTO> {
     private String structure;
     private String direction;
     private String note;
-    private Long rentArea;
+    private String rentArea;
     private String managerName;
     private String managerPhone;
     private Long rentPrice;

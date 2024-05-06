@@ -131,7 +131,7 @@
                                 <label class="col-xs-3">Diện tích thuê</label>
                                 <div class="col-xs-9">
                                     <input
-                                            type="number"
+                                            type="text"
                                             class="form-control"
                                             name="rentArea"
                                             value="${buildingEdit.rentArea}"
