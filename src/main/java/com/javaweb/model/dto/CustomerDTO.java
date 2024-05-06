@@ -1,0 +1,17 @@
+package com.javaweb.model.dto;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+public class CustomerDTO extends AbstractDTO<CustomerDTO>{
+    private String name;
+    private String managementStaff;
+    private String customerPhone;
+    private String email;
+    private String demand;
+    private String status;
+    private String companyName;
+
+}
