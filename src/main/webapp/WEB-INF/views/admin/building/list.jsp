@@ -110,7 +110,7 @@
                                                 <div class="col-sm-2">
                                                     <label for="name">Quận</label>
                                                     <form:select path="district">
-                                                        <form:option value="" label="---Chọn quận---"/>
+                                                        <form:option value="" label="---Chọn quận---" cssClass="form-control"/>
                                                         <form:options items="${districtCodes}"/>
                                                     </form:select>
                                                 </div>
@@ -212,7 +212,7 @@
                                                     <label for="name">Nhân viên phụ trách</label>
                                                     <form:select path="staffId">
                                                         <form:option value="" label="---Chọn NV---"/>
-                                                        <form:options items="${staffs}"/>
+                                                        <form:options items="${staffs}" cssClass="form-control"/>
                                                     </form:select>
                                                 </div>
                                             </div>

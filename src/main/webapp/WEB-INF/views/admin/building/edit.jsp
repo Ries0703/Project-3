@@ -43,9 +43,11 @@
                         modelAttribute="buildingEdit"
                         method="get"
                         action="${buildingEditURL}"
+                        name="formEdit"
+                        class="form-horizontal"
+                        id="form-edit"
                 >
                     <div class="col-xs-12">
-                        <form class="form-horizontal" id="form-edit">
                             <div class="form-group">
                                 <label class="col-xs-3">Tên tòa nhà</label>
                                 <div class="col-xs-9">
@@ -58,7 +60,7 @@
                                 <div class="col-xs-2">
                                     <form:select path="district">
                                         <form:option value="" label="---Chọn quận---"/>
-                                        <form:options items="${districtCodes}" required="required" id="district"
+                                        <form:options items="${districtCodes}" required="required" id="district" class="form-control"
                                                       placeholder="bắt buộc"/>
                                     </form:select>
                                 </div>
@@ -325,7 +327,6 @@
 
                                 </div>
                             </div>
-                        </form>
                     </div>
                 </form:form>
 
@@ -372,7 +373,7 @@
 
         var data = {};
         var typeCodes = [];
-        var formData = $("#form-edit").serializeArray();
+        var formData = $('#form-edit').serializeArray();
         $.each(formData, function (i, it) {
             if (it.name === "typeCode") {
                 typeCodes.push(it.value);

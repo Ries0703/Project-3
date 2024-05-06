@@ -30,8 +30,9 @@ public class BuildingAPI {
     }
 
     @PostMapping
-    public String addBuilding(@RequestBody BuildingDTO building) {
-        return "addBuilding()";
+    public String addBuilding(@RequestBody BuildingDTO buildingDTO) {
+        buildingService.addBuilding(buildingDTO);
+        return "add building successfully";
     }
 
     @PutMapping

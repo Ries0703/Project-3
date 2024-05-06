@@ -15,13 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 public class BuildingEntity extends BaseEntity {
-
-    @Column(name = "district")
-    private String districtCode;
-
-    @Column(name = "type")
-    private String type;
-    
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
@@ -32,8 +25,8 @@ public class BuildingEntity extends BaseEntity {
     @Column(name = "ward")
     private String ward;
 
-    @Column(name = "structure")
-    private String structure;
+    @Column(name = "district")
+    private String districtCode;
 
     @Column(name = "numberofbasement")
     private Long numberOfBasement;
@@ -41,11 +34,23 @@ public class BuildingEntity extends BaseEntity {
     @Column(name = "floorarea")
     private Long floorArea;
 
+    @Column(name = "level")
+    private Long level;
+
+
+    @Column(name = "type")
+    private String type;
+
+    @Column(name = "structure")
+    private String structure;
+
+
+
+
     @Column(name = "direction")
     private String direction;
 
-    @Column(name = "level")
-    private String level;
+
 
     @Column(name = "rentprice", nullable = false)
     private Long rentPrice;
@@ -110,4 +115,3 @@ public class BuildingEntity extends BaseEntity {
     @OneToMany(mappedBy = "buildingEntity")
     private List<AssignmentBuildingEntity> assignmentBuildingEntities;
 }
-

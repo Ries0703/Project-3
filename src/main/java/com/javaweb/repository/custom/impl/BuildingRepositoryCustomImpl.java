@@ -2,6 +2,7 @@ package com.javaweb.repository.custom.impl;
 
 
 import com.javaweb.entity.BuildingEntity;
+import com.javaweb.enums.TypeCode;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.repository.custom.BuildingRepositoryCustom;
 import com.javaweb.utils.StringUtil;
@@ -83,10 +84,12 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
         if (!StringUtil.isEmpty(buildingSearch.getAreaTo())) {
             where.append(" AND ra.value <= ").append(buildingSearch.getAreaTo());
         }
-
-        if (StringUtil.usableTypeCode(buildingSearch.getTypeCode())) {
-            where.append(" AND ( 1 = 1 ");
-            buildingSearch.getTypeCode().forEach(type -> where.append(" OR b.type LIKE '%").append(type).append("%' "));
+        List<TypeCode> typeCode = buildingSearch.getTypeCode();
+        if (StringUtil.usableTypeCode(typeCode)) {
+            where.append(" AND (b.type LIKE '%").append(buildingSearch.getTypeCode().get(0)).append("%'");
+            for (int i = 1; i < typeCode.size(); i++) {
+                where.append(" OR b.type LIKE '%").append(typeCode.get(i)).append("%' ");
+            }
             where.append(")");
         }
     }
