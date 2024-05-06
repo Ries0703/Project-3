@@ -6,6 +6,7 @@ import com.javaweb.enums.TypeCode;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
+import com.javaweb.service.BuildingService;
 import com.javaweb.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,22 +26,13 @@ public class BuildingController {
     @Autowired
     IUserService userService;
 
+    @Autowired
+    BuildingService buildingService;
+
     @GetMapping(value = "/admin/building-list")
     public ModelAndView buildingList(@ModelAttribute("buildingSearchRequest") BuildingSearchRequest buildingSearchRequest) {
-        List<BuildingSearchResponse> buildings = new ArrayList<>();
-        for (int i = 1; i <= 3; i++) {
-            BuildingSearchResponse buildingSearchResponse = new BuildingSearchResponse();
-            buildingSearchResponse.setId((long) i);
-            buildingSearchResponse.setName("Building Number " + i);
-            buildingSearchResponse.setAddress("street " + i + ", ward " + i + ", district " + i);
-            buildingSearchResponse.setNumberOfBasement((long) i);
-            buildingSearchResponse.setManagerName("Nguyen Van " + i);
-            buildingSearchResponse.setBrokerageFee(i * 1000D);
-            buildingSearchResponse.setFloorArea(i * 1000L);
-            buildings.add(buildingSearchResponse);
-        }
         return new ModelAndView("admin/building/list")
-                .addObject("buildingList", buildings)
+                .addObject("buildingList", buildingService.findAll(buildingSearchRequest))
                 .addObject("staffs", userService.getStaffs())
                 .addObject("districtCodes", DistrictCode.districtMap())
                 .addObject("typeCodes", TypeCode.typeCodeMap());

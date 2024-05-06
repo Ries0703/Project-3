@@ -2,16 +2,28 @@ package com.javaweb.api.admin;
 
 import com.javaweb.model.dto.AssignmentBuildingDTO;
 import com.javaweb.model.dto.BuildingDTO;
+import com.javaweb.model.request.BuildingSearchRequest;
+import com.javaweb.model.response.BuildingSearchResponse;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
+import com.javaweb.service.BuildingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/buildings")
 public class BuildingAPI {
+    @Autowired
+    BuildingService buildingService;
+
+    @GetMapping
+    public List<BuildingSearchResponse> getBuilding(@RequestParam BuildingSearchRequest buildingSearchRequest) {
+        return buildingService.findAll(buildingSearchRequest);
+    }
     @DeleteMapping(value = "/{ids}")
     public void deleteBuilding(@PathVariable Long[] ids) {
         System.out.println("ids gathered");

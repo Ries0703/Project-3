@@ -1,5 +1,6 @@
 package com.javaweb.model.request;
 
+import com.javaweb.enums.DistrictCode;
 import com.javaweb.enums.TypeCode;
 import com.javaweb.model.dto.AbstractDTO;
 import lombok.Builder;
@@ -10,12 +11,11 @@ import java.util.List;
 
 @Setter
 @Getter
-@Builder
 public class BuildingSearchRequest extends AbstractDTO<BuildingSearchRequest> {
     private String name;
     private String street;
     private String ward;
-    private String district;
+    private DistrictCode district;
     private Long numberOfBasement;
     private Long floorArea;
     private String direction;

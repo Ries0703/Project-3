@@ -4,7 +4,6 @@ package com.javaweb.repository.custom.impl;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.repository.custom.BuildingRepositoryCustom;
-
 import com.javaweb.utils.StringUtil;
 
 import javax.persistence.EntityManager;
@@ -14,9 +13,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
-    private static final List<String> LIKE_FIELDS = Arrays.asList("name", "ward", "street", "direction", "level", "managerName", "managerPhoneNumber");
-    private static final List<String> EQUAL_FIELDS = Arrays.asList("floorArea", "districtId", "numberOfBasement");
+    private static final List<String> LIKE_FIELDS = Arrays.asList("name", "ward", "street", "district", "level", "managerName", "managerPhone");
+    private static final List<String> EQUAL_FIELDS = Arrays.asList("floorArea", "numberOfBasement", "direction");
     private static final String STAFF_ID_FIELD = "staffId";
 
 
@@ -85,8 +85,9 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
         }
 
         if (StringUtil.usableTypeCode(buildingSearch.getTypeCode())) {
-            String type = buildingSearch.getTypeCode().stream().map(code -> "'" + code.toString().trim() + "'").collect(Collectors.joining(", "));
-            where.append(" AND rt.code IN (").append(type).append(") ");
+            where.append(" AND ( 1 = 1 ");
+            buildingSearch.getTypeCode().forEach(type -> where.append(" OR b.type LIKE '%").append(type).append("%' "));
+            where.append(")");
         }
     }
 
@@ -96,9 +97,6 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
         }
         if (!StringUtil.isEmpty(buildingSearch.getAreaFrom()) || !StringUtil.isEmpty(buildingSearch.getAreaTo())) {
             join.append(" JOIN rentarea ra ON b.id = ra.buildingid");
-        }
-        if (StringUtil.usableTypeCode(buildingSearch.getTypeCode())) {
-            join.append(" JOIN buildingrenttype brt ON brt.buildingid = b.id JOIN renttype rt ON brt.renttypeid = rt.id");
         }
     }
 }

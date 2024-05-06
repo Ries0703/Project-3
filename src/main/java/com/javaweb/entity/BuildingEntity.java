@@ -17,7 +17,7 @@ import java.util.List;
 public class BuildingEntity extends BaseEntity {
 
     @Column(name = "district")
-    private DistrictCode districtCode;
+    private String districtCode;
 
     @Column(name = "type")
     private String type;
