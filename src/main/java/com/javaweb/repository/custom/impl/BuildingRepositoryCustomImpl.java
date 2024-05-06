@@ -12,7 +12,6 @@ import javax.persistence.PersistenceContext;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
@@ -44,6 +43,7 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
         // get results
         return entityManager.createNativeQuery(sql, BuildingEntity.class).getResultList();
     }
+
 
     private void sqlWhereSimple(BuildingSearchRequest buildingSearch, StringBuilder where) {
         try {
