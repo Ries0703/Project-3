@@ -307,7 +307,7 @@
                                     <c:if test="${empty buildingEdit.id}">
                                         <button
                                                 class="btn btn-primary"
-                                                id="btnAddOrUpdateBuilding"
+                                                id="btnAddBuilding"
                                         >
                                             Thêm tòa nhà
                                         </button>
@@ -316,7 +316,8 @@
                                     <c:if test="${not empty buildingEdit.id}">
                                         <button
                                                 class="btn btn-primary"
-                                                id="btnAddOrUpdateBuilding"
+                                                id="btnUpdateBuilding"
+                                                onclick="editBuilding(${buildingEdit.id})"
                                         >
                                             Sửa tòa nhà
                                         </button>
@@ -355,7 +356,7 @@
         return true;
     }
 
-    $("#btnAddOrUpdateBuilding").click(function (event) {
+    $("#btnAddBuilding").click(event => {
         event.preventDefault();
 
         if (!validateField("#name", "Tên tòa nhà là bắt buộc.")) {
@@ -382,10 +383,59 @@
             }
         });
         data["typeCode"] = typeCodes;
-        upsertBuilding(data);
-    });
+        insertBuilding(data);
+    })
 
-    function upsertBuilding(data) {
+    function editBuilding(buildingId) {
+            if (!validateField("#name", "Tên tòa nhà là bắt buộc.")) {
+                return;
+            }
+            if (!validateField("#rentPrice", "Giá thuê là bắt buộc.")) {
+                return;
+            }
+            if (!validateField("#district", "Quận là bắt buộc.")) {
+                return;
+            }
+            if (!validateField("input[name='typeCode']", "Chọn ít nhất 1 loại tòa nhà.", true)) {
+                return;
+            }
+
+            var data = {};
+            var typeCodes = [];
+            var formData = $('#form-edit').serializeArray();
+            $.each(formData, function (i, it) {
+                if (it.name === "typeCode") {
+                    typeCodes.push(it.value);
+                } else {
+                    data["" + it.name + ""] = it.value;
+                }
+            });
+            data["typeCode"] = typeCodes;
+            data["id"] = buildingId;
+            updateBuilding(data);
+    }
+
+
+    function insertBuilding(data) {
+        $.ajax({
+            type: "PUT",
+            url: "/api/buildings",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: "text",
+            success: (respond) => {
+                alert(respond);
+                window.location.replace("/admin/building-list");
+            },
+            failure: () => {
+                alert("building not added");
+            },
+            error: () => {
+                alert("an error occurred");
+            },
+        });
+    }
+    function updateBuilding(data) {
         $.ajax({
             type: "POST",
             url: "/api/buildings",
@@ -397,7 +447,7 @@
                 window.location.replace("/admin/building-list");
             },
             failure: () => {
-                alert("building not added");
+                alert("building not edited");
             },
             error: () => {
                 alert("an error occurred");
