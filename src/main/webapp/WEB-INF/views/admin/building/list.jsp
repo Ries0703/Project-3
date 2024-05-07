@@ -413,8 +413,7 @@
                         </tr>
                         </thead>
                         <tbody>
-
-
+                            <%--loadStaffs(buildingId)--%>
                         </tbody>
                     </table>
                     <input type="hidden" id="buildingId" name="buildingId" value=""/>
@@ -491,7 +490,7 @@
 
         $.ajax({
             type: "PUT",
-            url: "/api/buildings/assign",
+            url: "/api/buildings/staffs",
             data: JSON.stringify(data),
             contentType: "application/json",
             // dataType: "json" no return data so no need

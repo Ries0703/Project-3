@@ -31,9 +31,6 @@ public class BuildingController {
                 .addObject("typeCodes", TypeCode.typeCodeMap());
     }
 
-
-
-
     @GetMapping(value = "/admin/building-edit")
     public ModelAndView addBuilding(@ModelAttribute(value = "buildingEdit") BuildingDTO buildingDTO) {
         return new ModelAndView("admin/building/edit")

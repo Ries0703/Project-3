@@ -2,15 +2,20 @@ package com.javaweb.service.impl;
 
 import com.javaweb.constant.SystemConstant;
 import com.javaweb.converter.UserConverter;
+import com.javaweb.entity.AssignmentBuildingEntity;
+import com.javaweb.entity.BuildingEntity;
 import com.javaweb.entity.RoleEntity;
 import com.javaweb.entity.UserEntity;
 import com.javaweb.exception.MyException;
 import com.javaweb.model.dto.PasswordDTO;
 import com.javaweb.model.dto.UserDTO;
+import com.javaweb.model.response.StaffResponseDTO;
+import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.RoleRepository;
 import com.javaweb.repository.UserRepository;
 import com.javaweb.service.IUserService;
 import org.apache.commons.lang.StringUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +23,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,6 +45,10 @@ public class UserService implements IUserService {
     @Autowired
     private UserConverter userConverter;
 
+    @Autowired
+    private BuildingRepository buildingRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public UserDTO findOneByUserNameAndStatus(String name, int status) {
@@ -53,23 +63,21 @@ public class UserService implements IUserService {
         } else {
             users = userRepository.findByStatusNot(0, pageable);
         }
-        return users.getContent().stream()
-                .map(userEntity -> {
-                        UserDTO userDTO = userConverter.convertToDto(userEntity);
-                        userDTO.setRoleCode(userEntity.getRoles().get(0).getCode());
-                        return userDTO;
-                }).collect(Collectors.toList());
+        return users.getContent().stream().map(userEntity -> {
+            UserDTO userDTO = userConverter.convertToDto(userEntity);
+            userDTO.setRoleCode(userEntity.getRoles().get(0).getCode());
+            return userDTO;
+        }).collect(Collectors.toList());
     }
 
 
     @Override
     public List<UserDTO> getAllUsers(Pageable pageable) {
-        return userRepository.getAllUsers(pageable).stream()
-                .map(userEntity -> {
-                    UserDTO userDTO = userConverter.convertToDto(userEntity);
-                    userDTO.setRoleCode(userEntity.getRoles().get(0).getCode());
-                    return userDTO;
-                }).collect(Collectors.toList());
+        return userRepository.getAllUsers(pageable).stream().map(userEntity -> {
+            UserDTO userDTO = userConverter.convertToDto(userEntity);
+            userDTO.setRoleCode(userEntity.getRoles().get(0).getCode());
+            return userDTO;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -79,9 +87,23 @@ public class UserService implements IUserService {
 
     @Override
     public Map<Long, String> getStaffs() {
-        return userRepository.findByStatusAndRoles_Code(1, "STAFF")
-                .stream()
-                .collect(Collectors.toMap(UserEntity::getId, UserEntity::getFullName));
+        return userRepository.findByStatusAndRoles_Code(1, "STAFF").stream().collect(Collectors.toMap(UserEntity::getId, UserEntity::getFullName));
+    }
+
+    @Override
+    public List<StaffResponseDTO> getAssignedStaff(Long buildingId) {
+        List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "STAFF");
+        List<UserEntity> assignedStaffs = buildingRepository.findById(buildingId).get()
+                .getAssignmentBuildingEntities().stream()
+                .map(AssignmentBuildingEntity::getUserEntity)
+                .collect(Collectors.toList());
+
+        return staffs.stream().map(userEntity -> {
+            if (assignedStaffs.contains(userEntity)) {
+                return userConverter.toStaffResponseDTO(userEntity, "checked");
+            }
+            return userConverter.toStaffResponseDTO(userEntity, "");
+        }).collect(Collectors.toList());
     }
 
 
@@ -172,6 +194,4 @@ public class UserService implements IUserService {
             userRepository.save(userEntity);
         }
     }
-
-
 }
