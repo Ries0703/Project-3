@@ -32,13 +32,13 @@ public class BuildingAPI {
 
     @PutMapping
     public String addBuilding(@RequestBody BuildingDTO buildingDTO) {
-        buildingService.addBuilding(buildingDTO);
+        buildingService.addOrEditBuilding(buildingDTO);
         return "add building successfully";
     }
 
     @PostMapping
     public String editBuilding(@RequestBody BuildingDTO building) {
-        buildingService.editBuilding(building);
+        buildingService.addOrEditBuilding(building);
         return "building updated successfully";
     }
 

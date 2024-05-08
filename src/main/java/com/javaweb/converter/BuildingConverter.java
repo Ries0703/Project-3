@@ -1,16 +1,17 @@
 package com.javaweb.converter;
 
 import com.javaweb.entity.BuildingEntity;
-import com.javaweb.entity.RentAreaEntity;
 import com.javaweb.enums.DistrictCode;
 import com.javaweb.enums.TypeCode;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.BuildingSearchResponse;
+import com.javaweb.utils.StringUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,12 +63,18 @@ public class BuildingConverter {
 									.deleteCharAt(0);
 
 		buildingEntity.setType(type.toString());
+
 		String[] rentAreas = buildingDTO.getRentArea().trim().split("[ ,]+");
-		buildingEntity.setRentAreaEntities(
-				Arrays.stream(rentAreas)
-				.map(area -> rentAreaConverter.stringToRentArea(area, buildingEntity))
-				.collect(Collectors.toList())
-		);
+
+		if (rentAreas.length == 1 && StringUtil.isEmpty(rentAreas[0])) {
+			buildingEntity.setRentAreaEntities(Collections.emptyList());
+		} else {
+			buildingEntity.setRentAreaEntities(
+					Arrays.stream(rentAreas)
+							.map(area -> rentAreaConverter.stringToRentArea(area, buildingEntity))
+							.collect(Collectors.toList())
+			);
+		}
 		return buildingEntity;
 	}
 }

@@ -1,8 +1,6 @@
 package com.javaweb.service.impl;
 
 import com.javaweb.converter.BuildingConverter;
-import com.javaweb.converter.BuildingSearchBuilderConverter;
-import com.javaweb.converter.RentAreaConverter;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
@@ -11,6 +9,7 @@ import com.javaweb.repository.AssignmentBuildingRepository;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.RentAreaRepository;
 import com.javaweb.service.IBuildingService;
+import com.javaweb.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,16 +47,12 @@ public class BuildingServiceImpl implements IBuildingService {
 	}
 
 	@Override
-	public void addBuilding(BuildingDTO buildingDTO) {
+	public void addOrEditBuilding(BuildingDTO buildingDTO) {
 		BuildingEntity buildingEntity = buildingConverter.dtoToEntity(buildingDTO);
-		buildingRepository.save(buildingEntity);
-		rentAreaRepository.saveAll(buildingEntity.getRentAreaEntities());
-	}
-
-	@Override
-	public void editBuilding(BuildingDTO buildingDTO) {
-		BuildingEntity buildingEntity = buildingConverter.dtoToEntity(buildingDTO);
-		rentAreaRepository.deleteByBuildingIdIn(Collections.singletonList(buildingEntity.getId()));
+		boolean isEditBuilding = !StringUtil.isEmpty(buildingDTO.getId());
+		if (isEditBuilding) {
+			rentAreaRepository.deleteByBuildingIdIn(Collections.singletonList(buildingEntity.getId()));
+		}
 		buildingRepository.save(buildingEntity);
 		rentAreaRepository.saveAll(buildingEntity.getRentAreaEntities());
 	}

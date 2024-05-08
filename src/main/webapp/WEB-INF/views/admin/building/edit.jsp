@@ -288,8 +288,7 @@
                             <div class="form-group">
                                 <label class="col-xs-3">Loại tòa nhà (Phải chọn 1 loại)</label>
                                 <div class="col-xs-9">
-                                    <form:checkboxes path="typeCode" id="typeCode" items="${typeCodes}"
-                                                     required="required"/>
+                                    <form:checkboxes path="typeCode" id="typeCode" items="${typeCodes}"/>
                                 </div>
                             </div>
 
