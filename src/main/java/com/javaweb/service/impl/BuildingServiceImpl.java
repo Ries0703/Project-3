@@ -10,9 +10,12 @@ import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.RentAreaRepository;
 import com.javaweb.service.IBuildingService;
 import com.javaweb.utils.StringUtil;
+import com.javaweb.utils.UploadFileUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -48,15 +51,37 @@ public class BuildingServiceImpl implements IBuildingService {
 
 	@Override
 	public void addOrEditBuilding(BuildingDTO buildingDTO) {
-		BuildingEntity buildingEntity = buildingConverter.dtoToEntity(buildingDTO);
+		BuildingEntity buildingEntity;
 		boolean isEditBuilding = !StringUtil.isEmpty(buildingDTO.getId());
 		if (isEditBuilding) {
+			buildingEntity = buildingRepository.findById(buildingDTO.getId()).get();
 			rentAreaRepository.deleteByBuildingIdIn(Collections.singletonList(buildingEntity.getId()));
+		} else {
+			buildingEntity = new BuildingEntity();
 		}
+		buildingEntity = buildingConverter.dtoToEntity(buildingDTO, buildingEntity);
+		saveThumbnail(buildingDTO, buildingEntity);
 		buildingRepository.save(buildingEntity);
 		rentAreaRepository.saveAll(buildingEntity.getRentAreaEntities());
 	}
 
+
+
+
+	private void saveThumbnail(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {
+		String path = "/building/" + buildingDTO.getImageName();
+		if (null != buildingDTO.getImageBase64()) {
+			if (null != buildingEntity.getImage()) {
+				if (!path.equals(buildingEntity.getImage())) {
+					File file = new File("C:/home/office" + buildingEntity.getImage());
+					file.delete();
+				}
+			}
+			byte[] bytes = Base64.decodeBase64(buildingDTO.getImageBase64().getBytes());
+			UploadFileUtils.writeOrUpdate(path, bytes);
+			buildingEntity.setImage(path);
+		}
+	}
 	@Override
 	public void removeBuilding(List<Long> ids) {
 		rentAreaRepository.deleteByBuildingIdIn(ids);

@@ -32,6 +32,7 @@ public class BuildingConverter {
 				);
 		String rentArea = building.getRentAreaEntities().stream().map(area -> area.getValue().toString()).collect(Collectors.joining(", "));
 		BuildingDTO buildingDTO = modelMapper.map(building, BuildingDTO.class);
+
 		buildingDTO.setTypeCode(typeCode);
 		buildingDTO.setRentArea(rentArea);
 		return buildingDTO;
@@ -53,8 +54,12 @@ public class BuildingConverter {
 		return dto;
 	}
 
-	public BuildingEntity dtoToEntity(BuildingDTO buildingDTO) {
-		BuildingEntity buildingEntity = modelMapper.map(buildingDTO, BuildingEntity.class);
+	public BuildingEntity dtoToEntity(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {
+		String oldImagePath = buildingEntity.getImage();
+		buildingEntity = modelMapper.map(buildingDTO, BuildingEntity.class);
+		if (StringUtil.isEmpty(buildingDTO.getImage())) {
+			buildingEntity.setImage(oldImagePath);
+		}
 		buildingEntity.setDistrictCode(buildingDTO.getDistrict().toString());
 
 		//delete square brackets resulted from mapping List to String of modelMapper
@@ -69,9 +74,10 @@ public class BuildingConverter {
 		if (rentAreas.length == 1 && StringUtil.isEmpty(rentAreas[0])) {
 			buildingEntity.setRentAreaEntities(Collections.emptyList());
 		} else {
+			BuildingEntity finalBuildingEntity = buildingEntity;
 			buildingEntity.setRentAreaEntities(
 					Arrays.stream(rentAreas)
-							.map(area -> rentAreaConverter.stringToRentArea(area, buildingEntity))
+							.map(area -> rentAreaConverter.stringToRentArea(area, finalBuildingEntity))
 							.collect(Collectors.toList())
 			);
 		}
