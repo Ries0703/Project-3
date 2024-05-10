@@ -16,5 +16,5 @@ public interface IBuildingService {
 	BuildingDTO findById(Long id);
 	void addOrEditBuilding(BuildingDTO buildingDTO);
 	void removeBuilding(List<Long> id);
-	long getBuildingCount();
+	int getBuildingCount(BuildingSearchRequest buildingSearchRequest);
 }

@@ -5,7 +5,6 @@ import com.javaweb.entity.BuildingEntity;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
-import com.javaweb.repository.AssignmentBuildingRepository;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.RentAreaRepository;
 import com.javaweb.service.IBuildingService;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,12 +28,10 @@ public class BuildingServiceImpl implements IBuildingService {
     private BuildingConverter buildingConverter;
     @Autowired
     private RentAreaRepository rentAreaRepository;
-    @Autowired
-    private AssignmentBuildingRepository assignmentBuildingRepository;
 
     @Override
-    public long getBuildingCount() {
-        return buildingRepository.count();
+    public int getBuildingCount(BuildingSearchRequest buildingSearchRequest) {
+        return buildingRepository.count(buildingSearchRequest);
     }
 
     @Override
@@ -58,14 +54,12 @@ public class BuildingServiceImpl implements IBuildingService {
         boolean isEditBuilding = !StringUtil.isEmpty(buildingDTO.getId());
         if (isEditBuilding) {
             buildingEntity = buildingRepository.findById(buildingDTO.getId()).get();
-            rentAreaRepository.deleteByBuildingIdIn(Collections.singletonList(buildingEntity.getId()));
         } else {
             buildingEntity = new BuildingEntity();
         }
         buildingEntity = buildingConverter.dtoToEntity(buildingDTO, buildingEntity);
         saveThumbnail(buildingDTO, buildingEntity);
         buildingRepository.save(buildingEntity);
-        rentAreaRepository.saveAll(buildingEntity.getRentAreaEntities());
     }
 
     private void saveThumbnail(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {
@@ -85,8 +79,6 @@ public class BuildingServiceImpl implements IBuildingService {
 
     @Override
     public void removeBuilding(List<Long> ids) {
-        rentAreaRepository.deleteByBuildingIdIn(ids);
-        assignmentBuildingRepository.deleteByBuildingEntityIdIn(ids);
         buildingRepository.deleteByIdIn(ids);
     }
 }

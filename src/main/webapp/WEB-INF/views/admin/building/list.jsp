@@ -87,6 +87,8 @@
                                         action="/admin/building-list"
                                         modelAttribute="buildingSearchRequest"
                                 >
+                                    <input type="hidden" name="page" value="1"/>
+                                    <input type="hidden" name="limit" value="2"/>
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-xs-12">
@@ -330,6 +332,7 @@
                                             title="Giao tòa nhà"
                                             class="btn btn-sm btn-success"
                                             onclick="assignmentBuilding(${buildingTable.id})"
+                                            name="assignmentBuildingBtn"
                                     >
                                         <svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -353,9 +356,9 @@
                                         <i class="ace-icon fa fa-pencil-square-o"></i>
                                     </a>
                                     <button
+                                            data-building-id="${buildingTable.id}"
                                             title="Xóa tòa nhà"
-                                            class="btn btn-sm btn-danger"
-                                            onclick="btnDeleteOneBuilding(${buildingTable.id})"
+                                            class="btn btn-sm btn-danger btnDeleteOneBuilding"
                                     >
                                         <i class="ace-icon glyphicon glyphicon-trash"></i>
                                     </button>
@@ -428,6 +431,24 @@
 
 
 <script>
+    document.querySelectorAll('.btnDeleteOneBuilding').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            var id = button.getAttribute('data-building-id');
+            btnDeleteOneBuilding(id);
+        });
+    });
+    $("#btnSearch").click(function (event) {
+        event.preventDefault();
+        $('#listForm').submit();
+    });
+
+    $('button[name="assignmentBuildingBtn"]').click(event => {
+        event.preventDefault();
+    });
+
+
+
     var currentPage = ${buildingSearchRequest.page};
     var totalPage = ${buildingSearchRequest.totalPages};
     $(() => {
@@ -439,6 +460,15 @@
                 if (currentPage != page) {
                     $('#page').val(page);
                     $('#limit').val(2);
+                    // Copy the values from the 'listForm' to the 'formSubmit' form
+                    $('#listForm input, #listForm select').each(function() {
+                        var input = $(this);
+                        if (input.attr('type') === 'checkbox' && !input.is(':checked')) {
+                            // Skip unchecked checkboxes
+                            return;
+                        }
+                        $('#formSubmit').append('<input type="hidden" name="' + input.attr('name') + '" value="' + input.val() + '" class="copied" />');
+                    });
                     $('#formSubmit').submit();
                 }
             }
@@ -533,23 +563,19 @@
             data: JSON.stringify(data),
             contentType: "application/json",
             // dataType: "json" no return data so no need
-            success: function (respond) {
+            success: response => {
                 alert("building deleted");
-                window.location.reload();
+                window.location.replace("/admin/building-list");
             },
-            failure: function () {
+            failure:  () => {
                 alert("building not deleted");
             },
-            error: function (data) {
+            error: data => {
                 data["buildingIds"] === undefined || data["buildingIds"].length === 0 ? alert("no buildings to delete") : alert("an error occurred");
             },
         });
     }
 
-    $("#btnSearch").click(function (event) {
-        event.preventDefault();
-        $('#listForm').submit();
-    });
 </script>
 
 <!-- <![endif]-->

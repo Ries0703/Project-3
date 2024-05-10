@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -37,20 +38,14 @@ public class BuildingEntity extends BaseEntity {
     @Column(name = "level")
     private Long level;
 
-
     @Column(name = "type")
     private String type;
 
     @Column(name = "structure")
     private String structure;
 
-
-
-
     @Column(name = "direction")
     private String direction;
-
-
 
     @Column(name = "rentprice", nullable = false)
     private Long rentPrice;
@@ -109,9 +104,20 @@ public class BuildingEntity extends BaseEntity {
     @Column(name = "managerphone")
     private String managerPhone;
 
-    @OneToMany(mappedBy = "buildingEntity")
-    private List<RentAreaEntity> rentAreaEntities;
+    @OneToMany(
+            mappedBy = "buildingEntity",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            orphanRemoval = true
+    )
+    private Set<RentAreaEntity> rentAreaEntities;
 
-    @OneToMany(mappedBy = "buildingEntity")
-    private List<AssignmentBuildingEntity> assignmentBuildingEntities;
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+    )
+    @JoinTable (
+        name = "assignmentbuilding",
+        joinColumns = @JoinColumn(name = "buildingid"),
+        inverseJoinColumns = @JoinColumn(name = "staffid"))
+    private Set<UserEntity> assignedStaffs;
 }

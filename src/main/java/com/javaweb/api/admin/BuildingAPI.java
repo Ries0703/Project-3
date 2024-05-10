@@ -7,7 +7,7 @@ import com.javaweb.model.response.BuildingSearchResponse;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.service.IAssignmentBuildingService;
 import com.javaweb.service.IBuildingService;
-import com.javaweb.service.impl.UserService;
+import com.javaweb.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +18,13 @@ import java.util.List;
 @RequestMapping(value = "/api/buildings")
 public class BuildingAPI {
     @Autowired
-    IBuildingService buildingService;
+    private IBuildingService buildingService;
 
     @Autowired
-    IAssignmentBuildingService assignmentBuildingService;
+    private IAssignmentBuildingService assignmentBuildingService;
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @GetMapping
     public List<BuildingSearchResponse> getBuilding(@RequestParam BuildingSearchRequest buildingSearchRequest) {

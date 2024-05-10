@@ -29,25 +29,26 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
     @SuppressWarnings("unchecked")
     @Override
     public List<BuildingEntity> findAll(BuildingSearchRequest buildingSearch, Pageable pageable) {
-        // build SQL query
-        StringBuilder select = new StringBuilder("SELECT ");
-        StringBuilder distinct = new StringBuilder();
-        String columns = "  b.* FROM building b ";
-        StringBuilder join = new StringBuilder();
-        StringBuilder where = new StringBuilder(" WHERE 1 = 1");
-        sqlWhereSimple(buildingSearch, where);
-        sqlWhereComplex(buildingSearch, where);
-        sqlJoin(buildingSearch, join);
-        if (!StringUtil.isEmpty(join)) {
-            distinct.append(" DISTINCT ");
-        }
+        StringBuilder sql = searchQueryBuilder(buildingSearch);
+
         String limit = String.format(" LIMIT %s ", pageable.getPageSize());
         String offset = String.format(" OFFSET %s ", pageable.getOffset());
-        String sql = select.append(distinct).append(columns).append(join).append(where).append(limit).append(offset)
-                .toString();
+        sql.append(limit).append(offset);
 
-        Query query = entityManager.createNativeQuery(sql, BuildingEntity.class);
+        Query query = entityManager.createNativeQuery(sql.toString(), BuildingEntity.class);
         return query.getResultList();
+    }
+
+    @Override
+    public int count(BuildingSearchRequest buildingSearchRequest) {
+        StringBuilder sql = searchQueryBuilder(buildingSearchRequest);
+
+        // Create a query to count the total number of records
+        String countSql = "SELECT COUNT(*) FROM (" + sql + ") AS total";
+        Query countQuery = entityManager.createNativeQuery(countSql);
+        Number total = (Number) countQuery.getSingleResult();
+
+        return total.intValue();
     }
 
 
@@ -107,5 +108,19 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
         if (!StringUtil.isEmpty(buildingSearch.getAreaFrom()) || !StringUtil.isEmpty(buildingSearch.getAreaTo())) {
             join.append(" JOIN rentarea ra ON b.id = ra.buildingid");
         }
+    }
+    private StringBuilder searchQueryBuilder(BuildingSearchRequest buildingSearch) {
+        StringBuilder select = new StringBuilder("SELECT ");
+        StringBuilder distinct = new StringBuilder();
+        String columns = "  b.* FROM building b ";
+        StringBuilder join = new StringBuilder();
+        StringBuilder where = new StringBuilder(" WHERE 1 = 1");
+        sqlWhereSimple(buildingSearch, where);
+        sqlWhereComplex(buildingSearch, where);
+        sqlJoin(buildingSearch, join);
+        if (!StringUtil.isEmpty(join)) {
+            distinct.append(" DISTINCT ");
+        }
+        return select.append(distinct).append(columns).append(join).append(where);
     }
 }

@@ -26,11 +26,11 @@ public class BuildingController {
 
     @GetMapping(value = "/admin/building-list")
     public ModelAndView buildingList(@ModelAttribute("buildingSearchRequest") BuildingSearchRequest buildingSearchRequest,
-                                     @RequestParam(value = "page", defaultValue = "1") int page,
-                                     @RequestParam(value = "limit", defaultValue = "2") int limit) {
+                                     @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                     @RequestParam(value = "limit", defaultValue = "2") Integer limit) {
         buildingSearchRequest.setPage(page);
         buildingSearchRequest.setMaxPageItems(limit);
-        buildingSearchRequest.setTotalItems((int) buildingService.getBuildingCount());
+        buildingSearchRequest.setTotalItems(buildingService.getBuildingCount(buildingSearchRequest));
         return new ModelAndView("admin/building/list")
                 .addObject("buildingList", buildingService.findAll(buildingSearchRequest, PageRequest.of(page - 1, limit)))
                 .addObject("staffs", userService.getStaffs())

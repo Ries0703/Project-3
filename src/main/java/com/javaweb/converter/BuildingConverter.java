@@ -1,6 +1,7 @@
 package com.javaweb.converter;
 
 import com.javaweb.entity.BuildingEntity;
+import com.javaweb.entity.UserEntity;
 import com.javaweb.enums.DistrictCode;
 import com.javaweb.enums.TypeCode;
 import com.javaweb.model.dto.BuildingDTO;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -56,12 +58,13 @@ public class BuildingConverter {
 
 	public BuildingEntity dtoToEntity(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {
 		String oldImagePath = buildingEntity.getImage();
+		Set<UserEntity> staffs = buildingEntity.getAssignedStaffs();
 		buildingEntity = modelMapper.map(buildingDTO, BuildingEntity.class);
 		if (StringUtil.isEmpty(buildingDTO.getImage())) {
 			buildingEntity.setImage(oldImagePath);
 		}
 		buildingEntity.setDistrictCode(buildingDTO.getDistrict().toString());
-
+		buildingEntity.setAssignedStaffs(staffs);
 		//delete square brackets resulted from mapping List to String of modelMapper
 		StringBuilder type = new StringBuilder(buildingEntity.getType())
 									.deleteCharAt(buildingEntity.getType().length() - 1)
@@ -72,13 +75,13 @@ public class BuildingConverter {
 		String[] rentAreas = buildingDTO.getRentArea().trim().split("[ ,]+");
 
 		if (rentAreas.length == 1 && StringUtil.isEmpty(rentAreas[0])) {
-			buildingEntity.setRentAreaEntities(Collections.emptyList());
+			buildingEntity.setRentAreaEntities(Collections.emptySet());
 		} else {
 			BuildingEntity finalBuildingEntity = buildingEntity;
 			buildingEntity.setRentAreaEntities(
 					Arrays.stream(rentAreas)
 							.map(area -> rentAreaConverter.stringToRentArea(area, finalBuildingEntity))
-							.collect(Collectors.toList())
+							.collect(Collectors.toSet())
 			);
 		}
 		return buildingEntity;

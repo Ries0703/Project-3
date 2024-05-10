@@ -2,8 +2,6 @@ package com.javaweb.service.impl;
 
 import com.javaweb.constant.SystemConstant;
 import com.javaweb.converter.UserConverter;
-import com.javaweb.entity.AssignmentBuildingEntity;
-import com.javaweb.entity.BuildingEntity;
 import com.javaweb.entity.RoleEntity;
 import com.javaweb.entity.UserEntity;
 import com.javaweb.exception.MyException;
@@ -23,10 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -93,10 +88,7 @@ public class UserService implements IUserService {
     @Override
     public List<StaffResponseDTO> getAssignedStaff(Long buildingId) {
         List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "STAFF");
-        List<UserEntity> assignedStaffs = buildingRepository.findById(buildingId).get()
-                .getAssignmentBuildingEntities().stream()
-                .map(AssignmentBuildingEntity::getUserEntity)
-                .collect(Collectors.toList());
+        Set<UserEntity> assignedStaffs = buildingRepository.findById(buildingId).get().getAssignedStaffs();
 
         return staffs.stream().map(userEntity -> {
             if (assignedStaffs.contains(userEntity)) {
