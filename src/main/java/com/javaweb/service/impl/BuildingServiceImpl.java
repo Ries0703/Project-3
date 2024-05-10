@@ -13,6 +13,7 @@ import com.javaweb.utils.StringUtil;
 import com.javaweb.utils.UploadFileUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -23,69 +24,69 @@ import java.util.stream.Collectors;
 
 @Service
 public class BuildingServiceImpl implements IBuildingService {
-	@Autowired
-	private BuildingRepository buildingRepository;
-	@Autowired
-	private BuildingConverter buildingConverter;
-	@Autowired
-	private RentAreaRepository rentAreaRepository;
-	@Autowired
-	private AssignmentBuildingRepository assignmentBuildingRepository;
+    @Autowired
+    private BuildingRepository buildingRepository;
+    @Autowired
+    private BuildingConverter buildingConverter;
+    @Autowired
+    private RentAreaRepository rentAreaRepository;
+    @Autowired
+    private AssignmentBuildingRepository assignmentBuildingRepository;
 
-	@Override
-	public List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest) {
-		return buildingRepository.findAll(buildingSearchRequest)
-		    .stream()
-		    .map(buildingConverter::entityToResponse)
-		    .collect(Collectors.toList());
-	}
+    @Override
+    public long getBuildingCount() {
+        return buildingRepository.count();
+    }
 
-	@Override
-	public BuildingDTO findById(Long id) {
-		Optional<BuildingEntity> buildingEntity = buildingRepository.findById(id);
-		if (!buildingEntity.isPresent()) {
-			return new BuildingDTO();
-		}
-		return buildingConverter.entityToDto(buildingEntity.get());
-	}
+    @Override
+    public List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest, Pageable pageable) {
+        return buildingRepository.findAll(buildingSearchRequest, pageable).stream().map(buildingConverter::entityToResponse).collect(Collectors.toList());
+    }
 
-	@Override
-	public void addOrEditBuilding(BuildingDTO buildingDTO) {
-		BuildingEntity buildingEntity;
-		boolean isEditBuilding = !StringUtil.isEmpty(buildingDTO.getId());
-		if (isEditBuilding) {
-			buildingEntity = buildingRepository.findById(buildingDTO.getId()).get();
-			rentAreaRepository.deleteByBuildingIdIn(Collections.singletonList(buildingEntity.getId()));
-		} else {
-			buildingEntity = new BuildingEntity();
-		}
-		buildingEntity = buildingConverter.dtoToEntity(buildingDTO, buildingEntity);
-		saveThumbnail(buildingDTO, buildingEntity);
-		buildingRepository.save(buildingEntity);
-		rentAreaRepository.saveAll(buildingEntity.getRentAreaEntities());
-	}
+    @Override
+    public BuildingDTO findById(Long id) {
+        Optional<BuildingEntity> buildingEntity = buildingRepository.findById(id);
+        if (!buildingEntity.isPresent()) {
+            return new BuildingDTO();
+        }
+        return buildingConverter.entityToDto(buildingEntity.get());
+    }
 
+    @Override
+    public void addOrEditBuilding(BuildingDTO buildingDTO) {
+        BuildingEntity buildingEntity;
+        boolean isEditBuilding = !StringUtil.isEmpty(buildingDTO.getId());
+        if (isEditBuilding) {
+            buildingEntity = buildingRepository.findById(buildingDTO.getId()).get();
+            rentAreaRepository.deleteByBuildingIdIn(Collections.singletonList(buildingEntity.getId()));
+        } else {
+            buildingEntity = new BuildingEntity();
+        }
+        buildingEntity = buildingConverter.dtoToEntity(buildingDTO, buildingEntity);
+        saveThumbnail(buildingDTO, buildingEntity);
+        buildingRepository.save(buildingEntity);
+        rentAreaRepository.saveAll(buildingEntity.getRentAreaEntities());
+    }
 
+    private void saveThumbnail(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {
+        String path = "/building/" + buildingDTO.getImageName();
+        if (null != buildingDTO.getImageBase64()) {
+            if (null != buildingEntity.getImage()) {
+                if (!path.equals(buildingEntity.getImage())) {
+                    File file = new File("C:/home/office" + buildingEntity.getImage());
+                    file.delete();
+                }
+            }
+            byte[] bytes = Base64.decodeBase64(buildingDTO.getImageBase64().getBytes());
+            UploadFileUtils.writeOrUpdate(path, bytes);
+            buildingEntity.setImage(path);
+        }
+    }
 
-
-	private void saveThumbnail(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {
-		String path = "/building/" + buildingDTO.getImageName();
-		if (null != buildingDTO.getImageBase64()) {
-			if (null != buildingEntity.getImage()) {
-				if (!path.equals(buildingEntity.getImage())) {
-					File file = new File("C:/home/office" + buildingEntity.getImage());
-					file.delete();
-				}
-			}
-			byte[] bytes = Base64.decodeBase64(buildingDTO.getImageBase64().getBytes());
-			UploadFileUtils.writeOrUpdate(path, bytes);
-			buildingEntity.setImage(path);
-		}
-	}
-	@Override
-	public void removeBuilding(List<Long> ids) {
-		rentAreaRepository.deleteByBuildingIdIn(ids);
-		assignmentBuildingRepository.deleteByBuildingEntityIdIn(ids);
-		buildingRepository.deleteByIdIn(ids);
-	}
+    @Override
+    public void removeBuilding(List<Long> ids) {
+        rentAreaRepository.deleteByBuildingIdIn(ids);
+        assignmentBuildingRepository.deleteByBuildingEntityIdIn(ids);
+        buildingRepository.deleteByIdIn(ids);
+    }
 }

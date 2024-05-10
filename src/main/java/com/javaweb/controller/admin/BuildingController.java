@@ -1,7 +1,6 @@
 package com.javaweb.controller.admin;
 
 
-import com.javaweb.constant.SystemConstant;
 import com.javaweb.enums.DistrictCode;
 import com.javaweb.enums.TypeCode;
 import com.javaweb.model.dto.BuildingDTO;
@@ -9,10 +8,12 @@ import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.service.IBuildingService;
 import com.javaweb.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller(value = "buildingControllerOfAdmin")
@@ -24,9 +25,14 @@ public class BuildingController {
     IBuildingService buildingService;
 
     @GetMapping(value = "/admin/building-list")
-    public ModelAndView buildingList(@ModelAttribute("buildingSearchRequest") BuildingSearchRequest buildingSearchRequest) {
+    public ModelAndView buildingList(@ModelAttribute("buildingSearchRequest") BuildingSearchRequest buildingSearchRequest,
+                                     @RequestParam(value = "page", defaultValue = "1") int page,
+                                     @RequestParam(value = "limit", defaultValue = "2") int limit) {
+        buildingSearchRequest.setPage(page);
+        buildingSearchRequest.setMaxPageItems(limit);
+        buildingSearchRequest.setTotalItems((int) buildingService.getBuildingCount());
         return new ModelAndView("admin/building/list")
-                .addObject("buildingList", buildingService.findAll(buildingSearchRequest))
+                .addObject("buildingList", buildingService.findAll(buildingSearchRequest, PageRequest.of(page - 1, limit)))
                 .addObject("staffs", userService.getStaffs())
                 .addObject("districtCodes", DistrictCode.districtMap())
                 .addObject("typeCodes", TypeCode.typeCodeMap());

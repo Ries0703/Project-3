@@ -6,9 +6,12 @@ import com.javaweb.enums.TypeCode;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.repository.custom.BuildingRepositoryCustom;
 import com.javaweb.utils.StringUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +28,7 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<BuildingEntity> findAll(BuildingSearchRequest buildingSearch) {
+    public List<BuildingEntity> findAll(BuildingSearchRequest buildingSearch, Pageable pageable) {
         // build SQL query
         StringBuilder select = new StringBuilder("SELECT ");
         StringBuilder distinct = new StringBuilder();
@@ -38,10 +41,13 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
         if (!StringUtil.isEmpty(join)) {
             distinct.append(" DISTINCT ");
         }
-        String sql = select.append(distinct).append(columns).append(join).append(where).toString();
+        String limit = String.format(" LIMIT %s ", pageable.getPageSize());
+        String offset = String.format(" OFFSET %s ", pageable.getOffset());
+        String sql = select.append(distinct).append(columns).append(join).append(where).append(limit).append(offset)
+                .toString();
 
-        // get results
-        return entityManager.createNativeQuery(sql, BuildingEntity.class).getResultList();
+        Query query = entityManager.createNativeQuery(sql, BuildingEntity.class);
+        return query.getResultList();
     }
 
 

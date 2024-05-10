@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="margin-right" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="display" uri="http://displaytag.sf.net" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:url var="buildingListURL" value="/admin/building-list"/>
 <html>
@@ -293,98 +294,82 @@
 
             <div class="hr hr-18 dotted hr-double"></div>
 
-            <div class="row">
+
                 <div class="col-xs-12">
-                    <table
-                            id="buildingList"
-                            class="table table-striped table-bordered table-hover"
-                    >
-                        <thead>
-                        <tr>
-                            <th class="center">
+                    <form action="<c:url value='/admin/building-list'/>" id="formSubmit" method="get">
+                        <display:table id="buildingTable" name="${buildingList}"
+                                       class="table table-striped table-bordered table-hover"
+                                       requestURI="/admin/building-list"
+                                       keepStatus="true"
+                        >
+                            <display:column
+                                    title="<label class='pos-rel'><input type='checkbox' class='ace' id='selectAllCheckboxBuilding' onclick='toggle(this)'/><span class='lbl'></span></label>"
+                                    media="html"
+                                    headerClass="center"
+                            >
                                 <label class="pos-rel">
-                                    <input type="checkbox" class="ace" id="selectAllCheckboxBuilding" onclick="toggle(this)"/>
+                                    <input type="checkbox" class="ace" name="building-checkbox"
+                                           value="${buildingTable.id}"/>
                                     <span class="lbl"></span>
                                 </label>
-                            </th>
-                            <th>Tên tòa nhà</th>
-                            <th>Địa chỉ</th>
-                            <th>Số tầng hầm</th>
-                            <th>Tên quản lý</th>
-                            <th>SĐT quản lý</th>
-                            <th>D.Tích sàn</th>
-                            <th>D.Tích trống</th>
-                            <th>D.Tích thuê</th>
-                            <th>Giá Thuê</th>
-                            <th>Phí dịch vụ</th>
-                            <th>Phí MG</th>
-                            <th>Thao tác</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="building" items="${buildingList}">
-                            <tr>
-                                <td class="center">
-                                    <label class="pos-rel">
-                                        <input type="checkbox" class="ace" name="building-checkbox" value="${building.id}"/>
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                                <td>${building.name}</td>
-                                <td>${building.address}</td>
-                                <td>${building.numberOfBasement}</td>
-                                <td>${building.managerName}</td>
-                                <td>${building.managerPhone}</td>
-                                <td>${building.floorArea}</td>
-                                <td>${building.emptyArea}</td>
-                                <td>${building.rentArea}</td>
-                                <td>${building.rentPrice}</td>
-                                <td>${building.serviceFee}</td>
-                                <td>${building.brokerageFee}</td>
-                                <td>
-                                    <div>
-                                        <button
-                                                title="Giao tòa nhà"
-                                                class="btn btn-sm btn-success"
-                                                onclick="assignmentBuilding(${building.id})"
+                            </display:column>
+                            <display:column property="name" title="Tên tòa nhà"/>
+                            <display:column property="address" title="Địa chỉ"/>
+                            <display:column property="numberOfBasement" title="Số tầng hầm"/>
+                            <display:column property="managerName" title="Tên quản lý"/>
+                            <display:column property="managerPhone" title="SĐT quản lý"/>
+                            <display:column property="floorArea" title="D.Tích sàn"/>
+                            <display:column property="emptyArea" title="D.Tích trống"/>
+                            <display:column property="rentArea" title="D.Tích thuê"/>
+                            <display:column property="rentPrice" title="Giá Thuê"/>
+                            <display:column property="serviceFee" title="Phí dịch vụ"/>
+                            <display:column property="brokerageFee" title="Phí MG"/>
+                            <display:column title="Thao tác" media="html">
+                                <div>
+                                    <button
+                                            title="Giao tòa nhà"
+                                            class="btn btn-sm btn-success"
+                                            onclick="assignmentBuilding(${buildingTable.id})"
+                                    >
+                                        <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="16"
+                                                height="16"
+                                                fill="currentColor"
+                                                class="bi bi-list"
+                                                viewBox="0 0 16 16"
                                         >
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-list"
-                                                    viewBox="0 0 16 16"
-                                            >
-                                                <path
-                                                        fill-rule="evenodd"
-                                                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                                                />
-                                            </svg>
-                                        </button>
-                                        <a
-                                                href="/admin/building-edit-${building.id}"
-                                                class="btn btn-sm btn-info"
-                                                title="Sửa tòa nhà"
-                                        >
-                                            <i class="ace-icon fa fa-pencil-square-o"></i>
-                                        </a>
-                                        <button
-                                                title="Xóa tòa nhà"
-                                                class="btn btn-sm btn-danger"
-                                                onclick="btnDeleteOneBuilding(${building.id})"
-                                        >
-                                            <i class="ace-icon glyphicon glyphicon-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </c:forEach>
-
-                        </tbody>
-                    </table>
+                                            <path
+                                                    fill-rule="evenodd"
+                                                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+                                            />
+                                        </svg>
+                                    </button>
+                                    <a
+                                            href="/admin/building-edit-${buildingTable.id}"
+                                            class="btn btn-sm btn-info"
+                                            title="Sửa tòa nhà"
+                                    >
+                                        <i class="ace-icon fa fa-pencil-square-o"></i>
+                                    </a>
+                                    <button
+                                            title="Xóa tòa nhà"
+                                            class="btn btn-sm btn-danger"
+                                            onclick="btnDeleteOneBuilding(${buildingTable.id})"
+                                    >
+                                        <i class="ace-icon glyphicon glyphicon-trash"></i>
+                                    </button>
+                                </div>
+                            </display:column>
+                        </display:table>
+                        <ul class="pagination" id="pagination"></ul>
+                        <input type="hidden" value="" id="page" name="page">
+                        <input type="hidden" value="" id="limit" name="limit">
+                    </form>
                 </div>
-            </div>
+
+
+
             <!-- /.row -->
         </div>
         <!-- /.page-content -->
@@ -413,7 +398,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <%--loadStaffs(buildingId)--%>
+                        <%--loadStaffs(buildingId)--%>
                         </tbody>
                     </table>
                     <input type="hidden" id="buildingId" name="buildingId" value=""/>
@@ -441,13 +426,32 @@
     </div>
 </div>
 
+
 <script>
+    var currentPage = ${buildingSearchRequest.page};
+    var totalPage = ${buildingSearchRequest.totalPages};
+    $(() => {
+        window.pagObj = $('#pagination').twbsPagination({
+            totalPages: totalPage,
+            visiblePages: 10,
+            startPage: currentPage,
+            onPageClick: (event, page) => {
+                if (currentPage != page) {
+                    $('#page').val(page);
+                    $('#limit').val(2);
+                    $('#formSubmit').submit();
+                }
+            }
+        });
+    })
+
     function toggle(source) {
         var checkboxes = document.getElementsByName('building-checkbox');
-        for(var i=0, n=checkboxes.length;i<n;i++) {
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
             checkboxes[i].checked = source.checked;
         }
     }
+
     function assignmentBuilding(buildingId) {
         $("#assignmentBuildingModal").modal();
         $("#buildingId").val(buildingId);
@@ -509,7 +513,7 @@
     $("#btnDeleteBuilding").click(function (event) {
         event.preventDefault();
         var data = {};
-        data["buildingIds"] = $("#buildingList")
+        data["buildingIds"] = $("#buildingTable")
             .find("tbody input[type=checkbox]:checked")
             .map(function () {
                 return $(this).val();
@@ -547,6 +551,7 @@
         $('#listForm').submit();
     });
 </script>
+
 <!-- <![endif]-->
 </body>
 </html>

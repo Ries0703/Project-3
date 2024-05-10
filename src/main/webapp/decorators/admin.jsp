@@ -49,6 +49,7 @@
 	<%--common javascript file--%>
 	<script type="text/javascript" src="js/global_admin_script.js"></script>
 
+	<script src="<c:url value = '/admin/paging/jquery.twbsPagination.js'/>"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="assets/js/jquery-ui.custom.min.js"></script>
 	<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
@@ -59,6 +60,7 @@
 	<script src="assets/js/jquery.flot.resize.min.js"></script>
 	<script src="assets/js/ace-elements.min.js"></script>
 	<script src="assets/js/ace.min.js"></script>
+
 
 	<!-- page specific plugin scripts -->
 	<script src="assets/js/jquery-ui.min.js"></script>

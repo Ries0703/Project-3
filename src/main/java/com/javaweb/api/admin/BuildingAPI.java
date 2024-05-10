@@ -9,6 +9,7 @@ import com.javaweb.service.IAssignmentBuildingService;
 import com.javaweb.service.IBuildingService;
 import com.javaweb.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class BuildingAPI {
 
     @GetMapping
     public List<BuildingSearchResponse> getBuilding(@RequestParam BuildingSearchRequest buildingSearchRequest) {
-        return buildingService.findAll(buildingSearchRequest);
+        return buildingService.findAll(buildingSearchRequest, Pageable.unpaged());
     }
 
     @PutMapping
