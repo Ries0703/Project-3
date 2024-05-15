@@ -6,7 +6,6 @@ import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
 import com.javaweb.repository.BuildingRepository;
-import com.javaweb.repository.RentAreaRepository;
 import com.javaweb.service.IBuildingService;
 import com.javaweb.utils.StringUtil;
 import com.javaweb.utils.UploadFileUtils;
@@ -26,8 +25,6 @@ public class BuildingServiceImpl implements IBuildingService {
     private BuildingRepository buildingRepository;
     @Autowired
     private BuildingConverter buildingConverter;
-    @Autowired
-    private RentAreaRepository rentAreaRepository;
 
     @Override
     public int getBuildingCount(BuildingSearchRequest buildingSearchRequest) {
@@ -50,14 +47,16 @@ public class BuildingServiceImpl implements IBuildingService {
 
     @Override
     public void addOrEditBuilding(BuildingDTO buildingDTO) {
-        BuildingEntity buildingEntity;
+        BuildingEntity buildingEntity = buildingConverter.dtoToEntity(buildingDTO);
+
         boolean isEditBuilding = !StringUtil.isEmpty(buildingDTO.getId());
         if (isEditBuilding) {
-            buildingEntity = buildingRepository.findById(buildingDTO.getId()).get();
-        } else {
-            buildingEntity = new BuildingEntity();
+            BuildingEntity oldBuilding = buildingRepository.findById(buildingDTO.getId())
+                    .orElseThrow(() -> new RuntimeException("no Building with id = " + buildingDTO.getId()));
+            buildingEntity.setImage(oldBuilding.getImage());
+            buildingEntity.setAssignedStaffs(oldBuilding.getAssignedStaffs());
         }
-        buildingEntity = buildingConverter.dtoToEntity(buildingDTO, buildingEntity);
+
         saveThumbnail(buildingDTO, buildingEntity);
         buildingRepository.save(buildingEntity);
     }

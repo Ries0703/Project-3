@@ -111,13 +111,10 @@ public class BuildingEntity extends BaseEntity {
     )
     private Set<RentAreaEntity> rentAreaEntities;
 
-    @ManyToMany(
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
-    )
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable (
         name = "assignmentbuilding",
-        joinColumns = @JoinColumn(name = "buildingid"),
-        inverseJoinColumns = @JoinColumn(name = "staffid"))
+        joinColumns = @JoinColumn(name = "buildingid", nullable = false),
+        inverseJoinColumns = @JoinColumn(name = "staffid", nullable = false))
     private Set<UserEntity> assignedStaffs;
 }
