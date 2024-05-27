@@ -14,29 +14,29 @@
 <body>
 <div class="main-content">
     <div class="main-content-inner">
-        <div class="breadcrumbs" id="breadcrumbs">
-            <script type="text/javascript">
-                try {
-                    ace.settings.check("breadcrumbs", "fixed");
-                } catch (e) {
-                }
-            </script>
+<%--        <div class="breadcrumbs" id="breadcrumbs">--%>
+<%--            <script type="text/javascript">--%>
+<%--                try {--%>
+<%--                    ace.settings.check("breadcrumbs", "fixed");--%>
+<%--                } catch (e) {--%>
+<%--                }--%>
+<%--            </script>--%>
 
-            <ul class="breadcrumb">
-                <li>
-                    <i class="ace-icon fa fa-home home-icon"></i>
-                    <a href="#">Home</a>
-                </li>
+<%--            <ul class="breadcrumb">--%>
+<%--                <li>--%>
+<%--                    <i class="ace-icon fa fa-home home-icon"></i>--%>
+<%--                    <a href="#">Home</a>--%>
+<%--                </li>--%>
 
-                <li>
-                    <a href="#">UI &amp; Elements</a>
-                </li>
-                <li class="active">Content Sliders</li>
-            </ul>
-            <!-- /.breadcrumb -->
+<%--                <li>--%>
+<%--                    <a href="#">UI &amp; Elements</a>--%>
+<%--                </li>--%>
+<%--                <li class="active">Content Sliders</li>--%>
+<%--            </ul>--%>
+<%--            <!-- /.breadcrumb -->--%>
 
-            <!-- /.nav-search -->
-        </div>
+<%--            <!-- /.nav-search -->--%>
+<%--        </div>--%>
 
         <div class="page-content">
             <div class="page-header">
@@ -246,51 +246,53 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pull-right">
-                        <a class="btn btn-primary" href="/admin/building-edit">
-                            <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    fill="currentColor"
-                                    class="bi bi-building-add"
-                                    viewBox="0 0 16 16"
-                            >
-                                <path
-                                        d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0"
-                                />
-                                <path
-                                        d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"
-                                />
-                                <path
-                                        d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"
-                                />
-                            </svg>
-                        </a>
+                    <c:if test="${currentUserRoles.contains('ROLE_MANAGER')}">
+                        <div class="pull-right">
+                            <a class="btn btn-primary" href="/admin/building-edit">
+                                <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="16"
+                                        height="16"
+                                        fill="currentColor"
+                                        class="bi bi-building-add"
+                                        viewBox="0 0 16 16"
+                                >
+                                    <path
+                                            d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0"
+                                    />
+                                    <path
+                                            d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"
+                                    />
+                                    <path
+                                            d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"
+                                    />
+                                </svg>
+                            </a>
 
 
-                        <button
-                                title="Xóa tòa nhà"
-                                class="btn btn-danger"
-                                id="btnDeleteBuilding"
-                        >
-                            <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    fill="currentColor"
-                                    class="bi bi-building-fill-dash"
-                                    viewBox="0 0 16 16"
+                            <button
+                                    title="Xóa tòa nhà"
+                                    class="btn btn-danger"
+                                    id="btnDeleteBuilding"
                             >
-                                <path
-                                        d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1"
-                                />
-                                <path
-                                        d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7.256A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-3.59 1.787A.5.5 0 0 0 9 9.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .39-.187A4.5 4.5 0 0 0 8.027 12H6.5a.5.5 0 0 0-.5.5V16H3a1 1 0 0 1-1-1zm2 1.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3 0v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"
-                                />
-                            </svg>
-                        </button>
-                    </div>
+                                <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="16"
+                                        height="16"
+                                        fill="currentColor"
+                                        class="bi bi-building-fill-dash"
+                                        viewBox="0 0 16 16"
+                                >
+                                    <path
+                                            d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1"
+                                    />
+                                    <path
+                                            d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7.256A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-3.59 1.787A.5.5 0 0 0 9 9.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .39-.187A4.5 4.5 0 0 0 8.027 12H6.5a.5.5 0 0 0-.5.5V16H3a1 1 0 0 1-1-1zm2 1.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3 0v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    </c:if>
                 </div>
             </div>
 
@@ -304,17 +306,19 @@
                                        requestURI="/admin/building-list"
                                        keepStatus="true"
                         >
-                            <display:column
-                                    title="<label class='pos-rel'><input type='checkbox' class='ace' id='selectAllCheckboxBuilding' onclick='toggle(this)'/><span class='lbl'></span></label>"
-                                    media="html"
-                                    headerClass="center"
-                            >
-                                <label class="pos-rel">
-                                    <input type="checkbox" class="ace" name="building-checkbox"
-                                           value="${buildingTable.id}"/>
-                                    <span class="lbl"></span>
-                                </label>
-                            </display:column>
+                            <c:if test="${currentUserRoles.contains('ROLE_MANAGER')}">
+                                <display:column
+                                        title="<label class='pos-rel'><input type='checkbox' class='ace' id='selectAllCheckboxBuilding' onclick='toggle(this)'/><span class='lbl'></span></label>"
+                                        media="html"
+                                        headerClass="center"
+                                >
+                                    <label class="pos-rel">
+                                        <input type="checkbox" class="ace" name="building-checkbox"
+                                               value="${buildingTable.id}"/>
+                                        <span class="lbl"></span>
+                                    </label>
+                                </display:column>
+                            </c:if>
                             <display:column property="name" title="Tên tòa nhà"/>
                             <display:column property="address" title="Địa chỉ"/>
                             <display:column property="numberOfBasement" title="Số tầng hầm"/>
@@ -326,44 +330,46 @@
                             <display:column property="rentPrice" title="Giá Thuê"/>
                             <display:column property="serviceFee" title="Phí dịch vụ"/>
                             <display:column property="brokerageFee" title="Phí MG"/>
-                            <display:column title="Thao tác" media="html">
-                                <div>
-                                    <button
-                                            title="Giao tòa nhà"
-                                            class="btn btn-sm btn-success"
-                                            onclick="assignmentBuilding(${buildingTable.id})"
-                                            name="assignmentBuildingBtn"
-                                    >
-                                        <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="16"
-                                                height="16"
-                                                fill="currentColor"
-                                                class="bi bi-list"
-                                                viewBox="0 0 16 16"
+                            <c:if test="${currentUserRoles.contains('ROLE_MANAGER')}">
+                                <display:column title="Thao tác" media="html">
+                                    <div>
+                                        <button
+                                                title="Giao tòa nhà"
+                                                class="btn btn-sm btn-success"
+                                                onclick="assignmentBuilding(${buildingTable.id})"
+                                                name="assignmentBuildingBtn"
                                         >
-                                            <path
-                                                    fill-rule="evenodd"
-                                                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                                            />
-                                        </svg>
-                                    </button>
-                                    <a
-                                            href="/admin/building-edit-${buildingTable.id}"
-                                            class="btn btn-sm btn-info"
-                                            title="Sửa tòa nhà"
-                                    >
-                                        <i class="ace-icon fa fa-pencil-square-o"></i>
-                                    </a>
-                                    <button
-                                            data-building-id="${buildingTable.id}"
-                                            title="Xóa tòa nhà"
-                                            class="btn btn-sm btn-danger btnDeleteOneBuilding"
-                                    >
-                                        <i class="ace-icon glyphicon glyphicon-trash"></i>
-                                    </button>
-                                </div>
-                            </display:column>
+                                            <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="16"
+                                                    height="16"
+                                                    fill="currentColor"
+                                                    class="bi bi-list"
+                                                    viewBox="0 0 16 16"
+                                            >
+                                                <path
+                                                        fill-rule="evenodd"
+                                                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+                                                />
+                                            </svg>
+                                        </button>
+                                        <a
+                                                href="/admin/building-edit-${buildingTable.id}"
+                                                class="btn btn-sm btn-info"
+                                                title="Sửa tòa nhà"
+                                        >
+                                            <i class="ace-icon fa fa-pencil-square-o"></i>
+                                        </a>
+                                        <button
+                                                data-building-id="${buildingTable.id}"
+                                                title="Xóa tòa nhà"
+                                                class="btn btn-sm btn-danger btnDeleteOneBuilding"
+                                        >
+                                            <i class="ace-icon glyphicon glyphicon-trash"></i>
+                                        </button>
+                                    </div>
+                                </display:column>
+                            </c:if>
                         </display:table>
                         <ul class="pagination" id="pagination"></ul>
                         <input type="hidden" value="" id="page" name="page">

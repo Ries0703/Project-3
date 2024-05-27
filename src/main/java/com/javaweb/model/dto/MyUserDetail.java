@@ -6,6 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -15,4 +17,10 @@ public class MyUserDetail extends User {
     }
     private Long id;
     private String fullName;
+
+    public List<String> getRoles() {
+        return this.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+    }
 }

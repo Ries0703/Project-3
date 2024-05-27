@@ -5,6 +5,7 @@ import com.javaweb.enums.DistrictCode;
 import com.javaweb.enums.TypeCode;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
+import com.javaweb.security.utils.SecurityUtils;
 import com.javaweb.service.IBuildingService;
 import com.javaweb.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,13 @@ public class BuildingController {
         buildingSearchRequest.setPage(page);
         buildingSearchRequest.setMaxPageItems(limit);
         buildingSearchRequest.setTotalItems(buildingService.getBuildingCount(buildingSearchRequest));
+
         return new ModelAndView("admin/building/list")
                 .addObject("buildingList", buildingService.findAll(buildingSearchRequest, PageRequest.of(page - 1, limit)))
                 .addObject("staffs", userService.getStaffs())
                 .addObject("districtCodes", DistrictCode.districtMap())
-                .addObject("typeCodes", TypeCode.typeCodeMap());
+                .addObject("typeCodes", TypeCode.typeCodeMap())
+                .addObject("currentUserRoles", SecurityUtils.getPrincipal().getRoles());
     }
 
     @GetMapping(value = "/admin/building-edit")

@@ -39,6 +39,10 @@ public class UserController {
 		model.setTotalItems(userService.countTotalItems());
 		mav.addObject(SystemConstant.MODEL, model);
 		initMessageResponse(mav, request);
+
+		List<String> currentUserRoles = SecurityUtils.getPrincipal().getRoles();
+		mav.addObject("currentUserRoles", currentUserRoles);
+
 		return mav;
 	}
 
