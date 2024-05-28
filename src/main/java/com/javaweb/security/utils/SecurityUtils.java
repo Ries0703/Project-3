@@ -4,7 +4,6 @@ import com.javaweb.model.dto.MyUserDetail;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

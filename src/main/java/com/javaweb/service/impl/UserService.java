@@ -13,7 +13,6 @@ import com.javaweb.repository.RoleRepository;
 import com.javaweb.repository.UserRepository;
 import com.javaweb.service.IUserService;
 import org.apache.commons.lang.StringUtils;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,8 +41,6 @@ public class UserService implements IUserService {
 
     @Autowired
     private BuildingRepository buildingRepository;
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Override
     public UserDTO findOneByUserNameAndStatus(String name, int status) {
@@ -59,16 +56,6 @@ public class UserService implements IUserService {
             users = userRepository.findByStatusNot(0, pageable);
         }
         return users.getContent().stream().map(userEntity -> {
-            UserDTO userDTO = userConverter.convertToDto(userEntity);
-            userDTO.setRoleCode(userEntity.getRoles().get(0).getCode());
-            return userDTO;
-        }).collect(Collectors.toList());
-    }
-
-
-    @Override
-    public List<UserDTO> getAllUsers(Pageable pageable) {
-        return userRepository.getAllUsers(pageable).stream().map(userEntity -> {
             UserDTO userDTO = userConverter.convertToDto(userEntity);
             userDTO.setRoleCode(userEntity.getRoles().get(0).getCode());
             return userDTO;
@@ -96,18 +83,6 @@ public class UserService implements IUserService {
             }
             return userConverter.toStaffResponseDTO(userEntity, "");
         }).collect(Collectors.toList());
-    }
-
-
-    @Override
-    public int getTotalItems(String searchValue) {
-        int totalItem = 0;
-        if (StringUtils.isNotBlank(searchValue)) {
-            totalItem = (int) userRepository.countByUserNameContainingIgnoreCaseOrFullNameContainingIgnoreCaseAndStatusNot(searchValue, searchValue, 0);
-        } else {
-            totalItem = (int) userRepository.countByStatusNot(0);
-        }
-        return totalItem;
     }
 
     @Override

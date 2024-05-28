@@ -6,8 +6,8 @@ import com.javaweb.enums.TypeCode;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.repository.custom.BuildingRepositoryCustom;
 import com.javaweb.utils.StringUtil;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,7 +16,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-
+@Repository
 public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
     private static final List<String> LIKE_FIELDS = Arrays.asList("name", "ward", "street", "district", "level", "managerName", "managerPhone");
     private static final List<String> EQUAL_FIELDS = Arrays.asList("floorArea", "numberOfBasement", "direction");

@@ -19,11 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller(value = "buildingControllerOfAdmin")
 public class BuildingController {
-    @Autowired
-    IUserService userService;
 
     @Autowired
-    IBuildingService buildingService;
+    private IUserService userService;
+
+    @Autowired
+    private IBuildingService buildingService;
 
     @GetMapping(value = "/admin/building-list")
     public ModelAndView buildingList(@ModelAttribute("buildingSearchRequest") BuildingSearchRequest buildingSearchRequest,

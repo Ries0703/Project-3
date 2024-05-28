@@ -14,7 +14,6 @@ import java.util.Map;
 public interface IUserService {
     UserDTO findOneByUserNameAndStatus(String name, int status);
     List<UserDTO> getUsers(String searchValue, Pageable pageable);
-    int getTotalItems(String searchValue);
     UserDTO findOneByUserName(String userName);
     UserDTO findUserById(long id);
     UserDTO insert(UserDTO userDTO);
@@ -23,7 +22,6 @@ public interface IUserService {
     UserDTO resetPassword(long id);
     UserDTO updateProfileOfUser(String id, UserDTO userDTO);
     void delete(long[] ids);
-    List<UserDTO> getAllUsers(Pageable pageable);
     int countTotalItems();
     Map<Long, String> getStaffs();
     List<StaffResponseDTO> getAssignedStaff(Long buildingId);

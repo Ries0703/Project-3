@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/buildings")
 public class BuildingAPI {
+
     @Autowired
     private IBuildingService buildingService;
 

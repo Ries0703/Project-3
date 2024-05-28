@@ -1,13 +1,11 @@
 package com.javaweb.entity;
 
 
-import com.javaweb.enums.DistrictCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 
 

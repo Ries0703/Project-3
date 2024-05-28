@@ -27,9 +27,6 @@ public class UserController {
 	@Autowired
 	private RoleService roleService;
 
-	@Autowired
-	private MessageUtils messageUtil;
-
 	@RequestMapping(value = "/admin/user-list", method = RequestMethod.GET)
 	public ModelAndView getNews(@ModelAttribute(SystemConstant.MODEL) UserDTO model, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("admin/user/list");
@@ -41,9 +38,7 @@ public class UserController {
 		initMessageResponse(mav, request);
 
 		List<String> currentUserRoles = SecurityUtils.getPrincipal().getRoles();
-		mav.addObject("currentUserRoles", currentUserRoles);
-
-		return mav;
+		return mav.addObject("currentUserRoles", currentUserRoles);
 	}
 
 	@RequestMapping(value = "/admin/user-edit", method = RequestMethod.GET)
@@ -51,8 +46,7 @@ public class UserController {
 		ModelAndView mav = new ModelAndView("admin/user/edit");
 		model.setRoleDTOs(roleService.getRoles());
 		initMessageResponse(mav, request);
-		mav.addObject(SystemConstant.MODEL, model);
-		return mav;
+		return mav.addObject(SystemConstant.MODEL, model);
 	}
 
 	@RequestMapping(value = "/admin/profile-{username}", method = RequestMethod.GET)
@@ -61,8 +55,7 @@ public class UserController {
 		UserDTO model = userService.findOneByUserName(username);
 		initMessageResponse(mav, request);
 		model.setRoleDTOs(roleService.getRoles());
-		mav.addObject(SystemConstant.MODEL, model);
-		return mav;
+		return mav.addObject(SystemConstant.MODEL, model);
 	}
 
 	@RequestMapping(value = "/admin/user-edit-{id}", method = RequestMethod.GET)
@@ -71,8 +64,7 @@ public class UserController {
 		UserDTO model = userService.findUserById(id);
 		model.setRoleDTOs(roleService.getRoles());
 		initMessageResponse(mav, request);
-		mav.addObject(SystemConstant.MODEL, model);
-		return mav;
+		return mav.addObject(SystemConstant.MODEL, model);
 	}
 
 	@RequestMapping(value = "/admin/profile-password", method = RequestMethod.GET)
@@ -80,14 +72,13 @@ public class UserController {
 		ModelAndView mav = new ModelAndView("admin/user/password");
 		UserDTO model = userService.findOneByUserName(SecurityUtils.getPrincipal().getUsername());
 		initMessageResponse(mav, request);
-		mav.addObject(SystemConstant.MODEL, model);
-		return mav;
+		return mav.addObject(SystemConstant.MODEL, model);
 	}
 
 	private void initMessageResponse(ModelAndView mav, HttpServletRequest request) {
 		String message = request.getParameter("message");
 		if (message != null && StringUtils.isNotEmpty(message)) {
-			Map<String, String> messageMap = messageUtil.getMessage(message);
+			Map<String, String> messageMap = MessageUtils.getMessage(message);
 			mav.addObject(SystemConstant.ALERT, messageMap.get(SystemConstant.ALERT));
 			mav.addObject(SystemConstant.MESSAGE_RESPONSE, messageMap.get(SystemConstant.MESSAGE_RESPONSE));
 		}

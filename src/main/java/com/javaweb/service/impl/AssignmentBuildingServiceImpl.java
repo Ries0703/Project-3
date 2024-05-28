@@ -8,19 +8,20 @@ import com.javaweb.service.IAssignmentBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import javax.transaction.Transactional;
 import java.util.HashSet;
 
 @Service
 public class AssignmentBuildingServiceImpl implements IAssignmentBuildingService {
 
     @Autowired
-    BuildingRepository buildingRepository;
+    private BuildingRepository buildingRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Override
+    @Transactional
     public void assignStaffsToBuilding(AssignmentBuildingDTO assignmentBuildingDTO) {
         BuildingEntity buildingEntity = buildingRepository.findById(assignmentBuildingDTO.getBuildingId()).get();
         buildingEntity.setAssignedStaffs(new HashSet<>(userRepository.findByIdIn(assignmentBuildingDTO.getStaffIds())));

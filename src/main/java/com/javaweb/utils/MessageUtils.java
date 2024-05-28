@@ -8,7 +8,7 @@ import java.util.Map;
 @Component
 public class MessageUtils {
 
-	public Map<String, String> getMessage(String message) {
+	public static Map<String, String> getMessage(String message) {
 		Map<String, String> result = new HashMap<>();
         switch (message) {
             case "update_success":

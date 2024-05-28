@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +22,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class BuildingServiceImpl implements IBuildingService {
+
     @Autowired
     private BuildingRepository buildingRepository;
+
     @Autowired
     private BuildingConverter buildingConverter;
 
@@ -46,6 +49,7 @@ public class BuildingServiceImpl implements IBuildingService {
     }
 
     @Override
+    @Transactional
     public void addOrEditBuilding(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = buildingConverter.dtoToEntity(buildingDTO);
 
@@ -77,6 +81,7 @@ public class BuildingServiceImpl implements IBuildingService {
     }
 
     @Override
+    @Transactional
     public void removeBuilding(List<Long> ids) {
         buildingRepository.deleteByIdIn(ids);
     }

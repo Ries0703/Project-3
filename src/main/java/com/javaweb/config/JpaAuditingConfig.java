@@ -14,7 +14,7 @@ import java.util.Optional;
 public class JpaAuditingConfig {
 
     @Bean
-    AuditorAware<String> auditorProvider() {
+    public AuditorAware<String> auditorProvider() {
         return new AuditorAwareImpl();
     }
 

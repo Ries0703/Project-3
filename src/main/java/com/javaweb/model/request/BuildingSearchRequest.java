@@ -3,7 +3,6 @@ package com.javaweb.model.request;
 import com.javaweb.enums.DistrictCode;
 import com.javaweb.enums.TypeCode;
 import com.javaweb.model.dto.AbstractDTO;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
