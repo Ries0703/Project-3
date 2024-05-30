@@ -2,14 +2,12 @@ package com.javaweb.api.admin;
 
 import com.javaweb.model.dto.AssignmentBuildingDTO;
 import com.javaweb.model.dto.BuildingDTO;
-import com.javaweb.model.request.BuildingSearchRequest;
-import com.javaweb.model.response.BuildingSearchResponse;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.service.IAssignmentBuildingService;
 import com.javaweb.service.IBuildingService;
 import com.javaweb.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,26 +25,22 @@ public class BuildingAPI {
     @Autowired
     private IUserService userService;
 
-    @GetMapping
-    public List<BuildingSearchResponse> getBuilding(@RequestParam BuildingSearchRequest buildingSearchRequest) {
-        return buildingService.findAll(buildingSearchRequest, Pageable.unpaged());
-    }
-
     @PutMapping
-    public String addBuilding(@RequestBody BuildingDTO buildingDTO) {
+    public ResponseEntity<String> addBuilding(@RequestBody BuildingDTO buildingDTO) {
         buildingService.addOrEditBuilding(buildingDTO);
-        return "add building successfully";
+        return ResponseEntity.ok("Building created");
     }
 
     @PostMapping
-    public String editBuilding(@RequestBody BuildingDTO building) {
+    public ResponseEntity<String> editBuilding(@RequestBody BuildingDTO building) {
         buildingService.addOrEditBuilding(building);
-        return "building updated successfully";
+        return ResponseEntity.ok("Building edited");
     }
 
     @DeleteMapping(value = "/{ids}")
-    public void deleteBuilding(@PathVariable List<Long> ids) {
+    public ResponseEntity<String> deleteBuilding(@PathVariable List<Long> ids) {
         buildingService.removeBuilding(ids);
+        return ResponseEntity.ok("Deleted " + ids.size() + " buildings");
     }
 
     @GetMapping(value = "/{id}/staffs")
@@ -58,9 +52,9 @@ public class BuildingAPI {
     }
 
     @PutMapping("/staffs")
-    public String assignStaffToBuilding(@RequestBody AssignmentBuildingDTO assignmentBuildingDTO) {
+    public ResponseEntity<String> assignStaffToBuilding(@RequestBody AssignmentBuildingDTO assignmentBuildingDTO) {
         assignmentBuildingService.assignStaffsToBuilding(assignmentBuildingDTO);
-        return "succeeded";
+        return ResponseEntity.ok("Staff assigned");
     }
 }
 
