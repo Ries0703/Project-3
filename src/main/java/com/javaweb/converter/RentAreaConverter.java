@@ -1,7 +1,7 @@
 package com.javaweb.converter;
 
-import com.javaweb.entity.BuildingEntity;
-import com.javaweb.entity.RentAreaEntity;
+import com.javaweb.repository.entity.BuildingEntity;
+import com.javaweb.repository.entity.RentAreaEntity;
 import com.javaweb.utils.NumberUtils;
 import org.springframework.stereotype.Component;
 

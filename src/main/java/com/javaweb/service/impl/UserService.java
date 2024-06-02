@@ -2,8 +2,8 @@ package com.javaweb.service.impl;
 
 import com.javaweb.constant.SystemConstant;
 import com.javaweb.converter.UserConverter;
-import com.javaweb.entity.RoleEntity;
-import com.javaweb.entity.UserEntity;
+import com.javaweb.repository.entity.RoleEntity;
+import com.javaweb.repository.entity.UserEntity;
 import com.javaweb.exception.MyException;
 import com.javaweb.model.dto.PasswordDTO;
 import com.javaweb.model.dto.UserDTO;

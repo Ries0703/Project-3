@@ -2,7 +2,7 @@ package com.javaweb.repository;
 
 
 
-import com.javaweb.entity.BuildingEntity;
+import com.javaweb.repository.entity.BuildingEntity;
 import com.javaweb.repository.custom.BuildingRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 

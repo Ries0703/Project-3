@@ -1,6 +1,6 @@
 package com.javaweb.converter;
 
-import com.javaweb.entity.BuildingEntity;
+import com.javaweb.repository.entity.BuildingEntity;
 import com.javaweb.enums.DistrictCode;
 import com.javaweb.enums.TypeCode;
 import com.javaweb.model.dto.BuildingDTO;

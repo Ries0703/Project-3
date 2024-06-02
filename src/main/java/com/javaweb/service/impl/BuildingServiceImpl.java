@@ -1,7 +1,7 @@
 package com.javaweb.service.impl;
 
 import com.javaweb.converter.BuildingConverter;
-import com.javaweb.entity.BuildingEntity;
+import com.javaweb.repository.entity.BuildingEntity;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;

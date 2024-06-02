@@ -1,6 +1,6 @@
 package com.javaweb.repository.custom;
 
-import com.javaweb.entity.RoleEntity;
+import com.javaweb.repository.entity.RoleEntity;
 
 
 public interface RoleRepositoryCustom {

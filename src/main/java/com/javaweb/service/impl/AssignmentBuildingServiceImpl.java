@@ -1,6 +1,6 @@
 package com.javaweb.service.impl;
 
-import com.javaweb.entity.BuildingEntity;
+import com.javaweb.repository.entity.BuildingEntity;
 import com.javaweb.model.dto.AssignmentBuildingDTO;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.UserRepository;

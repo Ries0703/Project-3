@@ -1,7 +1,7 @@
 package com.javaweb.repository.custom.impl;
 
 
-import com.javaweb.entity.BuildingEntity;
+import com.javaweb.repository.entity.BuildingEntity;
 import com.javaweb.enums.TypeCode;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.repository.custom.BuildingRepositoryCustom;

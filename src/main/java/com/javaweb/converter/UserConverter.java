@@ -1,7 +1,7 @@
 package com.javaweb.converter;
 
 import com.javaweb.model.dto.UserDTO;
-import com.javaweb.entity.UserEntity;
+import com.javaweb.repository.entity.UserEntity;
 import com.javaweb.model.response.StaffResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

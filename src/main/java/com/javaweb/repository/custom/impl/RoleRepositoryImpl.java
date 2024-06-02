@@ -1,6 +1,6 @@
 package com.javaweb.repository.custom.impl;
 
-import com.javaweb.entity.RoleEntity;
+import com.javaweb.repository.entity.RoleEntity;
 import com.javaweb.repository.custom.RoleRepositoryCustom;
 import org.springframework.stereotype.Repository;
 
